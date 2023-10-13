@@ -10,7 +10,10 @@ pipeline{
 
               script{
 
-                git branch: 'main', url: 'https://github.com/ambefrank/javaapp.git'
+                 gitCheckout(
+                    branch: "main"
+                    url: "https://github.com/ambefrank/javaapp.git"
+                 )
               }
            }
         }
