@@ -26,7 +26,7 @@ pipeline{
 
               script{
 
-                 mvntest{}
+                 mvnTest{}
               }
            }
         }
