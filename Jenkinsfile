@@ -2,22 +2,18 @@
 
 pipeline{
 
-    agent any
+   agent any
 
-    stages{
+   stages{
  
-        stage('Git Checkout'){
+      stage('Git Checkout'){
          
-           steps{
-
-              script{
-
-                 gitCheckout(
-                    branch: "main",
-                    url: "https://github.com/ambefrank/javaapp.git"
-                 )
-              }
-           }
-        }
-    }
+         steps{
+         gitCheckout(
+           branch: "main",
+           url: "https://github.com/ambefrank/javaapp.git"
+         )
+         }
+      }
+   }
 }
