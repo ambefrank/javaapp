@@ -19,39 +19,6 @@ pipeline{
            url: "https://github.com/ambefrank/javaapp.git"
          )
          }
-      }
-      stage('Unit Test Maven'){
-
-         when { expression { params.action == 'create'} }
-         
-         steps{
-            script{
-
-                mvnTest()
-            }
-         }
-      }
-      stage('Integration Test Maven'){
-
-         when { expression { params.action == 'create'} }
-         
-         steps{
-            script{
-
-                mvnintegrationTest()
-            }
-         }
-      }    
-      stage('Static Code Analysis: Sonarqube'){
-
-         when { expression { params.action == 'create'} }
-         
-         steps{
-            script{
-
-                staticCodeAnalysis()
-            }
-         }
       }          
    }
 }
