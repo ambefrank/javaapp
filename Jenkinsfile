@@ -54,7 +54,7 @@ pipeline{
             }
          }
       }
-      stage('Quality Gate Status: Sonarqube'){
+      stage('Quality Gate Status Check: Sonarqube'){
 
          when { expression { params.action == 'create'} }
          
@@ -65,7 +65,7 @@ pipeline{
                 QualityGateStatus(SonarQubecredentialsId)
             }
          }
-                
+      }          
    }
 }
 
