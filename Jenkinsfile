@@ -19,6 +19,17 @@ pipeline{
            url: "https://github.com/ambefrank/javaapp.git"
          )
          }
+      }
+      stage('Unit Test Maven'){
+
+         when { expression { params.action == 'create'} }
+         
+         steps{
+            script{
+
+                mvnTest()
+            }
+         }
       }          
    }
 }
