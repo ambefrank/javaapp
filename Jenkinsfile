@@ -87,7 +87,7 @@ pipeline{
          steps{
             script{
                
-                DockerBuild("${params.ImageName}", "${params.ImageTag}", "${params.AppName}")
+                DockerBuild("${params.ImageName}","${params.ImageTag}","${params.AppName}")
             }
          }
       }          
