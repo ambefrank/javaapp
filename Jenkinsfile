@@ -7,6 +7,9 @@ pipeline{
    parameters{
 
       choice(name: 'action', choices: 'create\ndelete', description: 'choose create/Destroy')
+      string(name: 'ImageName', description: 'name of the docker build', defaultValue: 'javapp')
+      string(name: 'ImageTag', description: 'tag of the docker build', defaultValue: 'v1')
+      string(name: 'AppName', description: 'name of the Application', defaultValue: 'springboot')
    }
 
    stages{
@@ -72,8 +75,19 @@ pipeline{
          
          steps{
             script{
-               
+
                 mvnBuild()
+            }
+         }
+      }
+      stage('Docker Image Build'){
+
+         when { expression { params.action == 'create'} }
+         
+         steps{
+            script{
+               
+                DockerBuild("${params.ImageName}", "${params.ImageTag}", "${params.AppName}")
             }
          }
       }          
