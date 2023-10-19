@@ -7,9 +7,9 @@ pipeline{
    parameters{
 
       choice(name: 'action', choices: 'create\ndelete', description: 'choose create/Destroy')
-      string(name: 'ImageName', description: 'name of the docker build', defaultValue: 'javapp')
-      string(name: 'ImageTag', description: 'tag of the docker build', defaultValue: 'v1')
-      string(name: 'DockerhubUser', description: 'name of the Application', defaultValue: 'ambefrankline')
+      string(name: 'aws_account_id', description: 'account ID of the aws_account', defaultValue: '217340246210')
+      string(name: 'region', description: 'region of the ecr', defaultValue: 'us-east-1')
+      string(name: 'ecr_repoName', description: 'name of the ECR Repository', defaultValue: 'ambefrankline')
    }
 
    stages{
@@ -77,6 +77,50 @@ pipeline{
             script{
 
                 mvnBuild()
+            }
+         }
+      }
+      stage('Docker Image Build: ECR'){
+
+         when { expression { params.action == 'create'} }
+         
+         steps{
+            script{
+
+                DockerBuild("${params.aws_account_id}","${params.region}","${params.ecr_repoName}")
+            }
+         }
+      }
+      stage('Docker Image Scan: Trivy'){
+
+         when { expression { params.action == 'create'} }
+         
+         steps{
+            script{
+
+                DockerImageScan("$${params.aws_account_id}","${params.region}","${params.ecr_repoName}")
+            }
+         }
+      }
+      stage('Docker Image push: ECR'){
+
+         when { expression { params.action == 'create'} }
+         
+         steps{
+            script{
+
+                DockerImagePush("$${params.aws_account_id}","${params.region}","${params.ecr_repoName}")
+            }
+         }
+      }
+      stage('Docker Image CleanUp: Docker_ECR'){
+
+         when { expression { params.action == 'create'} }
+         
+         steps{
+            script{
+
+                DockerImageCleanUp("${params.aws_account_id}","${params.region}","${params.ecr_repoName}")
             }
          }
       }
