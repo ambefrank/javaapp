@@ -109,7 +109,20 @@ pipeline{
          steps{
             script{
 
-                DockerImagePush("${params.aws_account_id}","${params.region}","${params.ecr_repoName}")
+               withCredentials([
+                  string(credentialsId: 'AWS_Access_key', variable: 'AWS_Access_Key'),
+                  string(credentialsId: 'AWS_Secret_Access_Key', variable: 'AWS_Secret_Access_Key')
+               ]) {
+
+                  sh """
+                  aws configure set aws_access_key_id "\$AWS_Access_Key"
+                  aws configure set aws_secret_access_key "\$AWS_Secret_Access_Key"
+                  aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 217340246210.dkr.ecr.us-east-1.amazonaws.com
+                  docker push 217340246210.dkr.ecr.us-east-1.amazonaws.com/ambefrankline:latest
+                  """
+                 }
+
+               // DockerImagePush("${params.aws_account_id}","${params.region}","${params.ecr_repoName}")
             }
          }
       }
