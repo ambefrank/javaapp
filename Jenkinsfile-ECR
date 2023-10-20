@@ -117,8 +117,8 @@ pipeline{
                   sh """
                   aws configure set aws_access_key_id "\$AWS_Access_Key"
                   aws configure set aws_secret_access_key "\$AWS_Secret_Access_Key"
-                  aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 217340246210.dkr.ecr.us-east-1.amazonaws.com
-                  docker push 217340246210.dkr.ecr.us-east-1.amazonaws.com/ambefrankline:latest
+                  aws ecr get-login-password --region ${params.region} | docker login --username AWS --password-stdin ${params.aws_account_id}.dkr.ecr.${params.region}.amazonaws.com
+                  docker push ${params.aws_account_id}.dkr.ecr.${params.region}.amazonaws.com/${params.ecr_repoName}:latest
                   """
                  }
 
